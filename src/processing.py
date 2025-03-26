@@ -9,5 +9,5 @@ def filter_by_state(info_list: List[Dict],
 
 
 def sort_by_date(info_list: List[Dict]) -> List[Dict]:
-    """The function return list"""
+    """The function returns a new list sorted by date"""
     return sorted(info_list, key=lambda x: x["date"], reverse=True)
