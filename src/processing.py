@@ -12,6 +12,8 @@ def filter_by_state(info_list: List[Dict], state: str = 'EXECUTED') -> List[Dict
 def sort_by_date(info_list: List[Dict], reverse: bool = True) -> List[Dict]:
     """The function returns a new list sorted by date"""
     dates = [item["date"] for item in info_list]
-    if len(set(dates)) == 1:  # Проверяем, все ли даты одинаковы
+    if not all(isinstance(item["date"], str) for item in info_list):
+        raise TypeError("Date format is incorrect")
+    elif len(set(dates)) == 1:
         raise ValueError("All dates are the same")
     return sorted(info_list, key=lambda x: x["date"], reverse=reverse)

@@ -23,7 +23,7 @@ def test_mask_account_or_card(number, expected):
 
 def test_mask_account_or_card_short_card_number(number):
     with pytest.raises(ValueError):
-        mask_account_or_card("Visa Classic 7003715386629301")
+        mask_account_or_card("Visa Classic 700371538662301")
 
 
 def test_mask_account_or_card_short_account_number(number):
