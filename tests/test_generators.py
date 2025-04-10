@@ -73,3 +73,25 @@ def transactions():
 ])
 def test_filter_by_currency(transactions, code, expected):
     assert list(filter_by_currency(transactions, code)) == expected
+
+
+def test_filter_by_currency_empty_list(transactions):
+    assert list(filter_by_currency([], 'USD')) == []
+
+
+def test_filter_by_currency_without_code(transactions):
+    with pytest.raises(ValueError):
+        filter_by_currency([{
+            "id": 142264268,
+            "state": "EXECUTED",
+            "date": "2019-04-04T23:20:05.206878",
+            "operationAmount": {
+                "amount": "79114.93",
+                "currency": {
+                    "name": "USD",
+                }
+            },
+            "description": "Перевод со счета на счет",
+            "from": "Счет 19708645243227258542",
+            "to": "Счет 75651667383060284188"
+        }])
