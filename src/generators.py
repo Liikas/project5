@@ -45,6 +45,36 @@ transactions = [
         "description": "Перевод со счета на счет",
         "from": "Счет 19708645243227258542",
         "to": "Счет 75651667383060284188"
+    },
+    {
+        "id": 873106923,
+        "state": "EXECUTED",
+        "date": "2019-03-23T01:09:46.296404",
+        "operationAmount": {
+            "amount": "43318.34",
+            "currency": {
+                "name": "руб.",
+                "code": "RUB"
+            }
+        },
+        "description": "Перевод со счета на счет",
+        "from": "Счет 44812258784861134719",
+        "to": "Счет 74489636417521191160"
+    },
+    {
+        "id": 594226727,
+        "state": "CANCELED",
+        "date": "2018-09-12T21:27:25.241689",
+        "operationAmount": {
+            "amount": "67314.70",
+            "currency": {
+                "name": "руб.",
+                "code": "RUB"
+            }
+        },
+        "description": "Перевод организации",
+        "from": "Visa Platinum 1246377376343588",
+        "to": "Счет 14211924144426031657"
     }
 ]
 
@@ -60,3 +90,28 @@ def filter_by_currency(trans_list: List[Dict[str, Any]], code="usd"):
 usd_transactions = filter_by_currency(transactions, "USD")
 for _ in range(2):
     print(next(usd_transactions))
+
+
+def transaction_descriptions(trans_dict: List[Dict[str, Any]]):
+    for transaction in trans_dict:
+        if not transaction.get("description"):
+            raise ValueError("The description is missing")
+        else:
+            yield transaction['description']
+
+
+descriptions = transaction_descriptions(transactions)
+for _ in range(5):
+    print(next(descriptions))
+
+
+def card_number_generator(start, end):
+    for i in range(start, end + 1):
+        count_0 = "0" * (16 - len(str(i)))
+        number = count_0 + str(i)
+        formated_number = f"{number[:4]} {number[4:8]} {number[8:12]} {number[12:]}"
+        yield formated_number
+
+
+for card_number in card_number_generator(1, 5):
+    print(card_number)
