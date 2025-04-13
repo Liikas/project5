@@ -173,19 +173,35 @@ def test_transaction_descriptions_without_description():
         }]))
 
 
-@pytest.fixture
-def number():
-    return ["1322 8457 3463 6849",
-            "4376 3874 2780 3084",
-            "3930 5920 8472 5731"]
+@pytest.mark.parametrize(
+    "start, end, result",
+    [
+        (1, 5, "0000 0000 0000 0001"),
+        (10, 12, "0000 0000 0000 0010"),
+    ]
+)
+def test_card_number_generator(start, end, result):
+    gen = card_number_generator(start, end)
+    assert next(gen) == result
 
 
-@pytest.mark.parametrize("expected", [
-    "1322 8457 3463 6849",
-    "4376 3874 2780 3084",
-    "3930 5920 8472 5731"
-])
-def test_card_number_generator(expected):
-    generator = card_number_generator(1322845734636849, 9999999999999999)
-    for expected_number in expected:
-        assert next(generator) == expected_number
+def test_card_number_generator_value_error():
+    with pytest.raises(ValueError):
+        gen = card_number_generator(-1, 5)
+        next(gen)
+
+
+@pytest.mark.parametrize(
+    "start, end, result, expected_format",
+    [
+        (1, 5, "0000 0000 0000 0001", True),
+        (10, 12, "0000 0000 0000 0010", True),
+        (0, 0, "0000 0000 0000 0000", True)
+    ]
+)
+def test_card_number_generator(start, end, result, expected_format):
+    gen = card_number_generator(start, end)
+    card_number = next(gen)
+    assert card_number == result
+    parts = card_number.split(' ')
+    assert len(parts) == 4 and all(len(part) == 4 for part in parts) == expected_format

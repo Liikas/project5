@@ -80,6 +80,7 @@ transactions = [
 
 
 def filter_by_currency(trans_list: List[Dict[str, Any]], code="usd"):
+    """The function is filtering list of transactions by currency"""
     for transaction in trans_list:
         if 'code' not in transaction['operationAmount']['currency']:
             raise ValueError("The code is missing")
@@ -93,6 +94,7 @@ for _ in range(2):
 
 
 def transaction_descriptions(trans_dict: List[Dict[str, Any]]):
+    """ The function is returning the descriptions of transactions"""
     for transaction in trans_dict:
         if not transaction.get("description"):
             raise ValueError("The description is missing")
@@ -106,11 +108,15 @@ for _ in range(5):
 
 
 def card_number_generator(start, end):
-    for i in range(start, end + 1):
-        count_0 = "0" * (16 - len(str(i)))
-        number = count_0 + str(i)
-        formated_number = f"{number[:4]} {number[4:8]} {number[8:12]} {number[12:]}"
-        yield formated_number
+    """The function of generation card numbers in specific range"""
+    if start < 0 or end < 0:
+        raise ValueError("The start and end can't be less than zero!")
+    else:
+        for i in range(start, end + 1):
+            count_0 = "0" * (16 - len(str(i)))
+            number = count_0 + str(i)
+            formatted_number = f"{number[:4]} {number[4:8]} {number[8:12]} {number[12:]}"
+            yield formatted_number
 
 
 for card_number in card_number_generator(1, 5):
